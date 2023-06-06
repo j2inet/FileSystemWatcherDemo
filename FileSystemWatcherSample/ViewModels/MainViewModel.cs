@@ -34,10 +34,22 @@ namespace FileSystemWatcherSample.ViewModels
             switch (name)
             {
                 case "contents.txt":
-                    Content = File.ReadAllText(e.FullPath);
+                    try
+                    {
+                        Content = File.ReadAllText(e.FullPath);
+                    }catch(IOException exc)
+                    {
+                        Content = "<unreadable>";
+                    }
                     break;
                 case "title.txt":
-                    Title = File.ReadAllText(e.FullPath);
+                    try
+                    {
+                        Title = File.ReadAllText(e.FullPath);
+                    } catch(IOException exc)
+                    {
+                        Title = "<unreadable>";
+                    }
                     break;
                 default:
                     break;
