@@ -19,37 +19,54 @@ namespace FileSystemWatcherSample.ViewModels
             Directory.SetCurrentDirectory(parentDirectory.FullName);
 
 
+            ReloadTitle(Path.Combine(parentDirectory.FullName, "title.txt"));
+            ReloadContent(Path.Combine(parentDirectory.FullName, "contents.txt"));
+
+
             FileSystemWatcher fsw = new FileSystemWatcher(parentDirectory.FullName);
             fsw.Filter = "*.txt";
             fsw.Created += FswCreatedOrChanged;
             fsw.Changed += FswCreatedOrChanged;
             fsw.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.LastWrite | NotifyFilters.FileName;
             fsw.EnableRaisingEvents = true;
+
+
         }
 
 
+        void ReloadContent(String fullPath)
+        {
+            try
+            {
+                Content = File.ReadAllText(fullPath);
+            }
+            catch (IOException exc)
+            {
+                Content = "<unreadable>";
+            }
+        }
+
+        void ReloadTitle(String fullPath)
+        {
+            try
+            {
+                Title = File.ReadAllText(fullPath);
+            }
+            catch (IOException exc)
+            {
+                Title = "<unreadable>";
+            }
+        }
         void FswCreatedOrChanged(object sender, FileSystemEventArgs e)
         {
             var name = e.Name.ToLower();
             switch (name)
             {
                 case "contents.txt":
-                    try
-                    {
-                        Content = File.ReadAllText(e.FullPath);
-                    }catch(IOException exc)
-                    {
-                        Content = "<unreadable>";
-                    }
+                    ReloadContent(e.FullPath);
                     break;
                 case "title.txt":
-                    try
-                    {
-                        Title = File.ReadAllText(e.FullPath);
-                    } catch(IOException exc)
-                    {
-                        Title = "<unreadable>";
-                    }
+                    ReloadTitle(e.FullPath);
                     break;
                 default:
                     break;
