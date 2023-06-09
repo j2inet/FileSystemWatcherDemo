@@ -11,9 +11,8 @@ namespace FileSystemWatcherSample.ViewModels
 {
     public  class MainViewModel: ViewModelBase
     {
-        public MainViewModel() {
-
-
+        public MainViewModel() 
+        {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
             FileInfo assemblyFile = new(GetType().Assembly.Modules.FirstOrDefault().FullyQualifiedName);
             var parentDirectory = assemblyFile.Directory;

@@ -24,9 +24,6 @@ watcher = fs.watch(watchPath)
 watcher.on('change', (event, fileName)=> {
     console.log(event);
     console.log(fileName);
-    if(fileName == 'asset-config.js') {
-      targetWindow.webContents.send('ASSET_UPDATE', fileName);
-    }
   })
   console.log('asset watcher activated');
 
